@@ -1,8 +1,9 @@
-﻿@{
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model AjaxCRUD.Models.Category
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <div class="container p-3">
     <div class="row pt-3">
@@ -65,17 +66,21 @@
             <div class="modal-body">
                 <form method="post">
                     <div class="border p-3 mt-4">
+                        @Html.AntiForgeryToken()
                         <div class="mb-3" id="cId">
-                            <label>Id</label>
-                            <input type="text" class="form-control" id="CategoryId" disabled="disabled"/>
+                            <label asp-for="Id">Id</label>
+                            <input asp-for="Id" type="text" class="form-control" id="CategoryId" disabled="disabled" />
+                            <span asp-validation-for="Id" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label>Name</label>
-                            <input type="text" placeholder="Name" class="form-control" id="Name"/>
+                            <label asp-for="Name">Name</label>
+                            <input asp-for="Name" type="text" placeholder="Name" class="form-control" id="Name" required/>
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label>Display Order</label>
-                            <input type="text" placeholder="Display Order" class="form-control" id="DOrder"/>
+                            <label asp-for="DisplayOrder"></label>
+                            <input asp-for="DisplayOrder" type="text" placeholder="Display Order" class="form-control" id="DOrder" required/>
+                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
                         </div>
                     </div>
                 </form>
@@ -92,7 +97,11 @@
 <div>
     <input type="hidden" id="urlCategoryData" value="@Url.Action("Create", "Category")"/>
 </div>
-
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.js"></script>

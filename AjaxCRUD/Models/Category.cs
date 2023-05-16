@@ -7,7 +7,7 @@ namespace AjaxCRUD.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Name is Required")]
         public string Name { get; set; }
         [DisplayName("Display Order")]
         [Range(1, 100, ErrorMessage = "Display order must be between 1 and 100 only!")]
