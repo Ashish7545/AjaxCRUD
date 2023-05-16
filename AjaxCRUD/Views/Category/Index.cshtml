@@ -1,16 +1,7 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@*@if(TempData["success"] != null)
-{
-    <h2>@TempData["success "]</h2>
-}*@
-
-@*also you can add this in layout file rather than add one by one in all pages*@
-@*<partial name="_Notification" />*@
 
 
 <div class="container p-3">
@@ -26,20 +17,17 @@
     </div>
 </div>
 <br />
-<table class="table table-bordered table-striped" style="width:100%">
+<table class="table table-bordered table-striped text-center" style="width:100%">
     <thead>
         <tr>
             <th>Id</th>
-            <th>
-                Category Name
-            </th>
-            <th>
-                Display Order
-            </th>
+            <th>Category Name</th>
+            <th>Display Order</th>
             <th>CreatedDateTime</th>
+            <th>Action</th>
         </tr>
     </thead>
-    <tbody class="text-center" id="table_data">
+    <tbody id="table_data">
         @*@foreach (var obj in Model)
         {
             <tr>
@@ -48,6 +36,9 @@
                 </td>
                 <td style="width:30%">
                     @obj.DisplayOrder
+                </td>
+                <td style="width:30%">
+                    @obj.CreatedDateTime
                 </td>
                 <td>
                     <div class="w-75 btn-group" role="group">
@@ -63,34 +54,36 @@
 </table>
 
 
-
+@*Add Category*@
 <div class="modal" tabindex="-1" id="CategoryModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Category</h5>
+                <h5 class="modal-title" id="catHeading">Add Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form method="post">
                     <div class="border p-3 mt-4">
-                        @*<div asp-validation-summary="All "></div>*@
+                        <div class="mb-3" id="cId">
+                            <label>Id</label>
+                            <input type="text" class="form-control" id="CategoryId" disabled="disabled"/>
+                        </div>
                         <div class="mb-3">
                             <label>Name</label>
                             <input type="text" placeholder="Name" class="form-control" id="Name"/>
-                            @*<span asp-validation-for="Name" class="text-danger"></span>*@
                         </div>
                         <div class="mb-3">
                             <label>Display Order</label>
                             <input type="text" placeholder="Display Order" class="form-control" id="DOrder"/>
-                            @*<span asp-validation-for="DisplayOrder" class="text-danger"></span>*@
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="AddCategory()" id="AddCategory">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="AddCategory()" id="AddCategory">Add</button>
+                <button type="button" class="btn btn-warning" onclick="UpdateCategory()" style="display:none" id="btnUpdate">Update</button>
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@ namespace BulkyBookAjaxWeb.Controllers
 
         public IActionResult Index()
         {
-            
+            //var category = _db.Category.ToList();
             return View();
         }
 
@@ -22,7 +22,7 @@ namespace BulkyBookAjaxWeb.Controllers
         public JsonResult CategoryList()
         {
             var category = _db.Category.ToList();
-            return Json(new { data = category }, System.Web.Mvc.JsonRequestBehavior.AllowGet);
+            return new JsonResult(category);
         }
 
         public JsonResult Create()
@@ -35,7 +35,6 @@ namespace BulkyBookAjaxWeb.Controllers
         [HttpPost]
         public JsonResult Create(Category obj)
         {
-
             var cat = new Category()
             {
                 Name = obj.Name,
@@ -46,111 +45,30 @@ namespace BulkyBookAjaxWeb.Controllers
             return new JsonResult("Data is Saved");
         }
 
-        ////GET
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        ////POST
-        //[HttpPost]
-        //[ValidateAntiForgeryToken] //prevents from cross-site forgery attack
-        //public IActionResult Create(Category obj)
-        //{
-        //    if (obj.Name == obj.DisplayOrder.ToString())
-        //    {
-        //        // ModelState.AddModelError("CustomeError", "The DisplayOrder cannot exactly match the Name.");
-
-        //        //Display the error in Name field as well.
-        //        ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
-        //    }
-        //    if (ModelState.IsValid)
-        //    {
-        //        _db.Category.Add(obj);
-        //        _db.SaveChanges();
-        //        TempData["success"] = "Category created successfully";
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(obj);
-        //}
-
-
-
         //For Edit the categories
         //GET
-        public IActionResult Edit(int? id)
+        public JsonResult Edit(int id)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var categoryFromDb = _db.Category.Find(id);
-            //var categoryFromDbFirst = _db.Category.FirstOrDefault(u => u.Id == id);
-            //var categoryFromSingle = _db.Category.SingleOrDefault(u => u.Id == id);
-
-            if (categoryFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(categoryFromDb);
+            var data = _db.Category.SingleOrDefault(u => u.Id == id);
+            return new JsonResult(data);
         }
 
         //POST
         [HttpPost]
-        [ValidateAntiForgeryToken] //prevents from cross-site forgery attack
-        public IActionResult Edit(Category obj)
+        public JsonResult Update(Category obj)
         {
-            if (obj.Name == obj.DisplayOrder.ToString())
-            {
-                //Display the error in Name field as well.
-                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
-            }
-            if (ModelState.IsValid)
-            {
-                _db.Category.Update(obj);
-                _db.SaveChanges();
-                TempData["success"] = "Category updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View(obj);
+            _db.Category.Update(obj);
+            _db.SaveChanges();
+            return new JsonResult("Category Updated!");
         }
-
-
 
         //For delete the categories
-        //GET
-        public IActionResult Delete(int? id)
+        public JsonResult Delete(int? id)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var categoryFromDb = _db.Category.Find(id);
-            //var categoryFromDbFirst = _db.Category.FirstOrDefault(u => u.Id == id);
-            //var categoryFromSingle = _db.Category.SingleOrDefault(u => u.Id == id);
-
-            if (categoryFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(categoryFromDb);
-        }
-
-        //POST
-        [HttpPost]
-        //[HttpPost, ActionName("Delete")] //Explicitely give the different name
-        [ValidateAntiForgeryToken] //prevents from cross-site forgery attack
-        public IActionResult DeletePOST(int? id)
-        {
-            var obj = _db.Category.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            _db.Category.Remove(obj);
+            var category = _db.Category.SingleOrDefault(u => u.Id == id);
+            _db.Category.Remove(category);
             _db.SaveChanges();
-            TempData["success"] = "Category deleted successfully";
-            return RedirectToAction("Index");
+            return new JsonResult("Data Deleted!");
         }
     }
 }
